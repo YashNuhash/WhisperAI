@@ -1,0 +1,17 @@
+# This is a config for E2B sandbox template.
+# You can use template ID (dww03nwyezum8d2oe9ue) or template name (WhisperAI-test4) to create a sandbox:
+
+# Python SDK
+# from e2b import Sandbox, AsyncSandbox
+# sandbox = Sandbox("WhisperAI-test4") # Sync sandbox
+# sandbox = await AsyncSandbox.create("WhisperAI-test4") # Async sandbox
+
+# JS SDK
+# import { Sandbox } from 'e2b'
+# const sandbox = await Sandbox.create('WhisperAI-test4')
+
+team_id = "a9316c6e-2452-4ec2-a529-f068c0b6d4a4"
+start_cmd = "/compile_page.sh"
+dockerfile = "e2b.Dockerfile"
+template_name = "WhisperAI-test4"
+template_id = "dww03nwyezum8d2oe9ue"
