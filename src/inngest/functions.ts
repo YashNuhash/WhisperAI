@@ -1,10 +1,18 @@
 import { inngest } from "./client";
 import { openai } from "@/lib/openai";
+import { Sandbox } from "@e2b/code-interpreter";
+import { getSandbox } from "./utils";
 
 export const helloWorld = inngest.createFunction(
   { id: "hello-world" },
   { event: "test/hello.world" },
   async ({ event, step }) => {
+
+    const sandboxId = await step.run("get-sandbox-id", async () => {
+      const sandbox = await Sandbox.create("whisperai-test4");
+      return sandbox.sandboxId;
+    })
+
     try {
       const codeAgent = await step.run("generate-response", async () => {
         return await openai.chat.completions.create({
@@ -25,7 +33,13 @@ export const helloWorld = inngest.createFunction(
       console.log(codeAgent.choices[0].message.content);
       
       await step.sleep("wait-a-moment", "5s");
-      return { output: codeAgent.choices[0].message.content };
+
+     const sandboxUrl = await step.run("get-sandbox-url", async () => {
+      const sandbox = await getSandbox(sandboxId);
+      const host = sandbox.getHost(3000);
+      return `http://${host}`;
+    });
+      return { output: codeAgent.choices[0].message.content , sandboxUrl}; 
     } catch (error) {
       console.error("OpenRouter API error:", error);
       return {
